@@ -1,0 +1,29 @@
+{
+    "name": "PoshAccess Lite",
+    "version": "1.0",
+    "description": "Free Poshmark share assist tool",
+    "manifest_version": 2,
+    "browser_action": {
+      "default_icon": {
+        "48": "img/poshaccess.png"
+          }
+    },
+    "background": {
+      "scripts": ["background.js"],
+
+      "persistent": false
+    },
+    "content_scripts": [{
+      "matches": ["*://poshmark.com/closet*"],
+      "js":      ["content.js", "share-content.js"]
+    }],
+    "permissions": [
+      "activeTab",
+      "storage",
+      "tabs"
+    ], 
+    "web_accessible_resources": [
+        "styles.css",
+        "img/icon48.png"
+    ]
+}
