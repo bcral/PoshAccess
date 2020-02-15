@@ -1,9 +1,13 @@
+const originalText = {shareEl: "SHARE", followButtonEl: "FOLLOW", unfollowButtonEl: "UNFOLLOW", sAndSButtonEl: "SELECT ITEMS"};
+
+// kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// kkkkkkkkkkkkkkkkkkkk Parent element for all HTML kkkkkkkkkkkkkkkkkkkk
+
 function includeWrap() {
 
     //main wrapper element that is included to the site's DOM
     var thing = document.createElement("div");
-    thing.setAttribute("id", "wrapDiv");
-    thing.setAttribute("class", "container");
+    thing.id = "wrapDiv";
     
     //adding the main wrapper element to the DOM - this contains all following
     //HTML elements that are created
@@ -59,15 +63,6 @@ function includeHeader() {
     //parent element that this element will be inserted into
     document.getElementById("backgroundEl").appendChild(headerEl);
     
-    //a link element for "log out" in the top corner of element
-    var logOutEl = document.createElement("a");
-    logOutEl.id = "logout";
-    logOutEl.addEventListener("click", hideApp)
-    logOutEl.innerHTML = "X";
-    
-    //parent element that this element will be inserted into
-    document.getElementById("headerElement").appendChild(logOutEl);
-    
     //h2 element for containing "poshaccess" text
     var headTagEl = document.createElement("h2");
     headTagEl.setAttribute("class", "primary-color");
@@ -76,6 +71,33 @@ function includeHeader() {
     
     //parent element that this element will be inserted into
     document.getElementById("headerElement").appendChild(headTagEl);
+
+    //a link element for "log out" in the top corner of element
+    var buttonCont = document.createElement("div");
+    buttonCont.id = "buttonCont";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("headerElement").appendChild(buttonCont);
+
+    //a link element for "log out" in the top corner of element
+    var logOutEl = document.createElement("a");
+    logOutEl.id = "logout";
+    logOutEl.addEventListener("click", hideApp);
+    logOutEl.className = "navButton";
+    logOutEl.innerHTML = "&times;";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("buttonCont").appendChild(logOutEl);
+
+    //a link element for "log out" in the top corner of element
+    var popout = document.createElement("a");
+    popout.id = "popout";
+    popout.addEventListener("click", togglePopout);
+    popout.className = "navButton";
+    popout.innerHTML = ">";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("buttonCont").appendChild(popout);
 }
     
     // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
@@ -108,12 +130,75 @@ function includeForm() {
     //parent element that this element will be inserted into
     document.getElementById("mainFormEl").appendChild(formContainerEl);
     
+    // Start code for "share speed" form elements
+    // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+
+    //element for the row for the "share" form elements
+    var formSpeedRowEl = document.createElement("div");
+    formSpeedRowEl.id = "formSpeedRowEl";
+    formSpeedRowEl.className = "borderBottom";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("formContainerEl").appendChild(formSpeedRowEl);
+    
+    //element containing the column and form-group for the "share to" elements
+    var formSpeedContainerEl = document.createElement("div");
+    formSpeedContainerEl.setAttribute("class", "list-el");
+    formSpeedContainerEl.id = "formSpeedContainerEl";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("formSpeedRowEl").appendChild(formSpeedContainerEl);
+    
+    //h5 element containing the header text for "share with"
+    var speedTitleEl = document.createElement("h5");
+    speedTitleEl.className = "list-el";
+    speedTitleEl.innerHTML = "Function Speed:";
+    speedTitleEl.id = "speedTitleEl";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("formSpeedContainerEl").appendChild(speedTitleEl);
+    
+    //element for input of the "share with" radio button for followers
+    var speedInputEl = document.createElement("input");
+    speedInputEl.id = "speed";
+    speedInputEl.setAttribute("name", "speed");
+    speedInputEl.setAttribute("type", "range");
+    speedInputEl.setAttribute("min", 2000);
+    speedInputEl.setAttribute("max", 10000);
+    speedInputEl.setAttribute("step", 1000);
+    speedInputEl.setAttribute("value", 6000);    
+    speedInputEl.addEventListener('change',function() {
+            speedValueEl.innerHTML=parseInt((speedInputEl.value) / 1000) + " seconds";
+        });
+
+    //parent element that this element will be inserted into
+    document.getElementById("formSpeedContainerEl").appendChild(speedInputEl);
+
+    //line break element for layout purposes
+    var speedValueBreakEl = document.createElement("br");
+    document.getElementById("formSpeedContainerEl").appendChild(speedValueBreakEl);
+
+    //element for input of the "share with" radio button for followers
+    var speedValueEl = document.createElement("label");
+    speedValueEl.id = "speedValueEl";
+    speedValueEl.setAttribute("for", "speed")
+    speedValueEl.setAttribute("maxlength", 10);
+    speedValueEl.innerHTML=(speedInputEl.value / 1000) + " seconds";
+    speedValueEl.className = "center";
+
+    //parent element that this element will be inserted into
+    document.getElementById("formSpeedContainerEl").appendChild(speedValueEl);
+
+    // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+    // End of code for creating and inserting "share speed" elements
+
     // Start code for "share with" form elements
     // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     
     //element for the row for the "share" form elements
     var formShareRowEl = document.createElement("div");
     formShareRowEl.id = "formShareRowEl";
+    formShareRowEl.className = "borderBottom";
     
     //parent element that this element will be inserted into
     document.getElementById("formContainerEl").appendChild(formShareRowEl);
@@ -239,11 +324,109 @@ function includeForm() {
     document.getElementById("contLabelEl").appendChild(contInputEl);
 }
     
-    // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-    // End of code for creating and inserting "continuous" elements  
+// kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// End of code for creating and inserting "continuous" elements  
 
-    // Start code for creating and inserting "share" button elements
-    // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// Start code for creating and inserting "popout" button elements
+// kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+
+function includePopout() {
+    //div element for popout container
+    var popoutEl = document.createElement("div");
+    popoutEl.id = "popoutEl";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("wrapDiv").appendChild(popoutEl);
+
+    //div element for button wrapper
+    var buttonWrapEl = document.createElement("div");
+    buttonWrapEl.id = "buttonWrapEl";
+    buttonWrapEl.className = "center list-el borderBottom";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("popoutEl").appendChild(buttonWrapEl);
+
+    //button element for follow button
+    var followButtonEl = document.createElement("button");
+    followButtonEl.id = "followButtonEl";
+    followButtonEl.innerHTML = "FOLLOW";
+    followButtonEl.className = "primary-color followBtn";
+    followButtonEl.addEventListener("click", followLoop(followButtonEl));
+
+    //parent element that this element will be inserted into
+    document.getElementById("buttonWrapEl").appendChild(followButtonEl);
+
+    //button element for unfollow button
+    var unfollowButtonEl = document.createElement("button");
+    unfollowButtonEl.id = "unfollowButtonEl";
+    unfollowButtonEl.innerHTML = "UNFOLLOW";
+    unfollowButtonEl.className = "primary-color followBtn";
+    unfollowButtonEl.addEventListener("click", followLoop(unfollowButtonEl));
+
+    //parent element that this element will be inserted into
+    document.getElementById("buttonWrapEl").appendChild(unfollowButtonEl);
+
+    //div element for CAPTCHA alert wrapper
+    var captchaWrapEl = document.createElement("div");
+    captchaWrapEl.id = "captchaWrapEl";
+    captchaWrapEl.className = "center list-el borderBottom";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("popoutEl").appendChild(captchaWrapEl);
+
+    //element for input of the "CAPTCHA Alert" checkbox
+    var captchaInputEl = document.createElement("input");
+    captchaInputEl.id = "captchaInputEl";
+    captchaInputEl.setAttribute("name", "captcha");
+    captchaInputEl.setAttribute("type", "checkbox");
+    captchaInputEl.className = "checkbox";
+
+    //parent element that this element will be inserted into
+    document.getElementById("captchaWrapEl").appendChild(captchaInputEl);
+
+    //element for input of the "CAPTCHA alert" checkbox
+    var captchaTextEl = document.createElement("label");
+    captchaTextEl.id = "captchaTextEl";
+    captchaTextEl.innerHTML = "CAPTCHA alert";
+    captchaTextEl.setAttribute("for", "captcha");
+
+    //parent element that this element will be inserted into
+    document.getElementById("captchaWrapEl").appendChild(captchaTextEl);
+
+    //div element for Rapid Share wrapper
+    var rsWrapEl = document.createElement("div");
+    rsWrapEl.id = "rsWrapEl";
+    rsWrapEl.className = "center list-el";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("popoutEl").appendChild(rsWrapEl);
+
+    //element for input of the "Rapid Share" checkbox
+    var rsInputEl = document.createElement("input");
+    rsInputEl.id = "rsInputEl";
+    rsInputEl.setAttribute("name", "rapidShare");
+    rsInputEl.setAttribute("type", "checkbox");
+    rsInputEl.className = "checkbox";
+    rsInputEl.addEventListener("click", rapidShare);
+
+    //parent element that this element will be inserted into
+    document.getElementById("rsWrapEl").appendChild(rsInputEl);
+
+    //element for text label of the "Rapid Share" checkbox
+    var rsTextEl = document.createElement("label");
+    rsTextEl.id = "rsTextEl";
+    rsTextEl.innerHTML = "Rapid Share";
+    rsTextEl.setAttribute("for", "rapidShare");
+
+    //parent element that this element will be inserted into
+    document.getElementById("rsWrapEl").appendChild(rsTextEl);
+}
+
+// kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// End of code for creating and inserting "popout" elements  
+
+// Start code for creating and inserting "share" button elements
+// kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     
 function includeShare() {
     
@@ -266,10 +449,10 @@ function includeShare() {
     //button element for executing "share" code
     var shareEl = document.createElement("button");
     shareEl.id = "shareEl";
-    shareEl.className = "primary-color";
-    shareEl.addEventListener("click", clickFunc)
-    shareEl.innerHTML = "SHARE";
-    
+    shareEl.className = "primary-color btn";
+    shareEl.addEventListener("click", functionSorter(shareEl));
+    shareEl.innerHTML = originalText.shareEl;
+
     //parent element that this element will be inserted into
     document.getElementById("shareBtnWrapEl").appendChild(shareEl);
     
@@ -284,6 +467,7 @@ async function buildApp() {
         await includeWarning();
         await includeHeader();
         await includeForm();
+        await includePopout();
         await includeShare();
     }
 
@@ -291,8 +475,9 @@ onload = buildApp();
 onload = hideApp();
     
     var displayed = false;
-    
+    var toggle = false;
     var running = false;
+    var loopStat = false;
     
     function hideApp() {
         var appWrapper = document.getElementById("wrapDiv");
@@ -304,6 +489,17 @@ onload = hideApp();
         var appWrapper = document.getElementById("wrapDiv");
         appWrapper.style.display = "block";
         displayed = !displayed;
+    }
+
+    function togglePopout() {
+        toggle = !toggle;
+        if ( toggle ) {
+            popoutEl.style.display = "block";
+            popout.innerHTML = "<";
+        } else {
+            popoutEl.style.display = "none";
+            popout.innerHTML = ">";
+        }
     }
     
     //message from background page that icon was clicked
@@ -322,14 +518,76 @@ onload = hideApp();
     // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     // kkkkkkkkkkkkkkkkkkkkkkkkk Share button code kkkkkkkkkkkkkkkkkkkkkkkkk
     
-    function clickFunc() {
-        running = !running;
+function btnDisplay(c, d) {
+    let key = c.id;
+    if (d === true) {
+        c.classList.remove("primary-color");
+        c.classList.add("warning-color");
+        c.innerHTML = "STOP";
+    } else {
+        c.classList.remove("warning-color");
+        c.classList.add("primary-color");
+        c.innerHTML = originalText[key];
+    }
+}
+
+function shareFunc(b) {
+    if (isLooping === false) {
+        running = true;
         changeStuff(running);
-        if (running === true) {
-            shareEl.className = "warning-color";
-            shareEl.innerHTML = "STOP";
+        btnDisplay(b, running);
+    } else {
+        stopFunc(b);
+    }
+}
+function stopFunc(b) {
+    running = false;
+    changeStuff(running);
+    btnDisplay(b, running);
+}
+
+function functionSorter(a) {
+    return function () {
+        if (running === false) {
+            shareFunc(a);
         } else {
-            shareEl.className = "primary-color";
-            shareEl.innerHTML = "SHARE";
+            stopFunc(a);
         }
     }
+}
+
+//function for getting and setting value of slider for sharing speed
+function setSpeed() {
+    speed = document.getElementById('speed').value;
+}
+
+//function for calling the rapid share functionality from share-content
+const rapidShare = () => {
+    if (!isLooping) {
+        //make function fire on share
+        var shareElements = document.getElementsByClassName('share');
+        for (var i = 0; i < shareElements.length; i++) {
+            shareElements[i].addEventListener("click", rapidShareFunc);
+        }
+    }
+}
+
+//function called when "follow" or "unfollow" are clicked
+const followLoop = (item) => {
+    return function() {
+        loopStat = !loopStat;
+
+        btnDisplay(item, loopStat);
+
+        followFunc(item);
+    }
+}
+
+//function for toggling and calling function for select & share
+const selectFunc = (item) => {
+    selectMode = !selectMode;
+    toggleLinks(selectMode, isLooping);
+    btnDisplay(item, selectMode);
+}
+
+

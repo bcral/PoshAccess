@@ -39,7 +39,12 @@ a {
 }
 
 .navbar {
-display: block
+display: block;
+position: relative;
+}
+
+.center {
+  text-align: center;
 }
 
 .main-nav {
@@ -58,12 +63,6 @@ border: solid 1px;
 width: 100%;
 }
 
-.share-btn {
-text-align: center;
-position: relative;
-bottom: 0px;
-}
-
 .list-el {
   padding: 0.4em;
   margin-bottom: 0px;
@@ -79,43 +78,18 @@ bottom: 0px;
   display: block;
 }
 
-#wrapDiv {
-  position: relative;
-  z-index: 2000;
-  position: fixed;
-  display: block;
-  bottom: 10px;
-  left: 6px;
-  max-height: 400px;
-  width: 185px;
-  margin: auto;
-  padding: 0;
-  box-shadow: -5px -5px 3px rgba(0, 0, 0, 0.3);
-}
-
-#shareEl {
-  border-right: solid 1px #f0f0f0;
-}
-
-#optionsEl {
-  border-left: solid 1px #f0f0f0;
-}
-
-#logout {
-  position: relative;
-  float: right;
-  padding: 0.2em;
-  margin: 0.2em;
-  font-size: 20px;
+.navButton {
+  padding: 0.1em;
+  margin: 0.1em;
+  font-size: 22px;
   color: #f0f0f0;
   cursor: pointer;
-  font-weight: 700;
   line-height: 70%;
   border: solid 1px #86bccc;
-  font-style: bold;
+  display: block;
 }
 
-#logout:hover {
+.navButton:hover {
   color: #cccccc;
   background-color: #6f9ead;
   font-style: bold;
@@ -125,6 +99,46 @@ bottom: 0px;
   border-right: solid 1px #86bccc;
   border-top: solid 1px #427f94;
   border-left: solid 1px #427f94;
+}
+
+.borderBottom {
+  border-bottom: solid 1px #6f9ead;
+}
+
+.followBtn {
+  display: block;
+  margin: 0.4em auto;
+  padding: 0.4em;
+}
+
+.checkbox {
+  margin: 1em;
+  float: left;
+}
+
+#wrapDiv {
+  z-index: 2000;
+  position: fixed;
+  bottom: 10px;
+  left: 6px;
+  max-height: 500px;
+  max-width: 370px;
+  margin: auto;
+  padding: 0;
+  box-shadow: -5px -5px 3px rgba(0, 0, 0, 0.3);
+  display: flex;
+  overflow: hidden;
+}
+
+#shareEl {
+  border-right: solid 1px #f0f0f0;
+  width: 100%;
+  padding: 0.5em;
+  border: solid 1px #cccccc;
+}
+
+#optionsEl {
+  border-left: solid 1px #f0f0f0;
 }
 
 #headLiteTagEl {
@@ -145,9 +159,21 @@ bottom: 0px;
 }
 
 #backgroundEl {
-  max-height: 300px;
   background-color: #f0f0f0;
   border: solid 1px #000;
+  width: 185px;
+  flex: 1;
+  float: left;
+}
+
+#popoutEl {
+  background-color: #f0f0f0;
+  border: solid 1px #000;
+  width: 185px;
+  flex: 1;
+  float: right;
+  text-align: center;
+  display: none;
 }
 
 #warningEl {
@@ -160,10 +186,9 @@ bottom: 0px;
   margin: 0.5em;
 }
 
-#shareEl {
-  width: 100%;
-  padding: 0.5em;
-  border: solid 1px #cccccc;
+#speedValueEl {
+  width: 25px;
+  text-decoration: none;
 }
 
 #shareEl:hover {
@@ -171,6 +196,8 @@ bottom: 0px;
   color: #000000;
 }
 
-#formShareRowEl {
-  border-bottom: solid 1px #6f9ead;
+#buttonCont {
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
