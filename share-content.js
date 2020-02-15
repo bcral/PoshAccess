@@ -6,11 +6,11 @@ var shareWIth = '';
 var continuous = false;
 var active = false;
 var isLooping = false;
-// //total number of listings in closet - for stopping share loop at the end
-// //of the closet, if selected
-// var totalListings = document.querySelector('.count').textContent;
-// totalListings = totalListings.replace(/\,/g,'');
-// totalListings = parseInt(totalListings,10);
+//total number of listings in closet - for stopping share loop at the end
+//of the closet, if selected
+var totalListings = document.querySelector('.count').textContent;
+totalListings = totalListings.replace(/\,/g,'');
+totalListings = parseInt(totalListings,10);
 //CAPTCHA alarm settings
 var alarm = new Audio();
 alarm.src = chrome.runtime.getURL("img/CAPTCHA_chime.mp3");
@@ -67,6 +67,12 @@ function listingsConfirm() {
 
 }
 
+//function for the captcha alarm
+async function captchaAlarm() {
+    alarm.play();
+    await sleep(3000);
+}
+
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkk SHARE LOOP CODE kkkkkkkkkkkkkkkkkkkkkkkkkkkkk
@@ -86,12 +92,6 @@ async function shareLoop () {
 
     var endCycle = false;
 
-    //total number of listings in closet - for stopping share loop at the end
-    //of the closet, if selected
-    var totalListings = document.querySelector('.count').textContent;
-    totalListings = totalListings.replace(/\,/g,'');
-    totalListings = parseInt(totalListings,10);
-
     //share loop that continues firing until "active" returns false
     async function doSomething() {
         while (active === true) {
@@ -99,10 +99,11 @@ async function shareLoop () {
             //stop share loop if captcha appears
             if (document.getElementById("captcha-form")) {
                 endCycle = true;
+
                 //check UI input to see if user selected CAPTCHA alarm
                 if (captchaInputEl.checked) {
                     //play audio file
-                    while (document.getElementById("captcha-form")) alarm.play();
+                    while (document.getElementById("captcha-form")) captchaAlarm();
                 }
                 break;
             }
