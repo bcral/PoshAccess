@@ -22,6 +22,7 @@ h5 {
 
 input[type=checkbox], input[type=radio] {
   margin-left: 1em;
+  vertical-align: middle;
 }
 
 a {
@@ -114,6 +115,10 @@ width: 100%;
 .checkbox {
   margin: 1em;
   float: left;
+}
+
+.block {
+  display: block;
 }
 
 #wrapDiv {

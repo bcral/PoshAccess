@@ -18,6 +18,8 @@ var selectItem = document.getElementsByClassName('auth-required');
 let followLooping = false;
 var condition = false;
 let j = 0;
+//variables for checking the status of exceptions in the UI
+var exception;
 
 const sleep = (milliseconds) => {
     return new Promise(resolve => setInterval(resolve, milliseconds))
@@ -157,16 +159,14 @@ async function shareLoop () {
                 //depending on which condition is selected by the user in the UI
                 let thisItem = currentEl[i].querySelector('i');
 
-                if (thisItem.classList.contains('sold-tag') == false &&
-                thisItem.classList.contains('not-for-sale-tag') == false) {
-                    document.getElementsByClassName('share')[i].click();
-                    //delay for slowing down the process until a promise can be
-                    //implimented to confirm the 'share' element was clicked
-                    //after waiting, fire sharePopupFunction() to select where to share
-                    await sleep(800).then(sharePopupFunction());
-                } else {
+                if ((nfsInputEl.checked && thisItem.classList.contains('not-for-sale-tag')) ||
+                (soldInputEl.checked && thisItem.classList.contains('sold-tag'))) {
                     //slows delay speed to skip through faster
                     speed = 300;
+                    console.log('skipped');
+                } else {
+                    document.getElementsByClassName('share')[i].click();
+                    await sleep(800).then(sharePopupFunction());
                 }
             }
 
