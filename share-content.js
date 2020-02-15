@@ -1,7 +1,6 @@
 //var speedInput = document.getElementById('speed');
 var speed;
-var selectedStyle = "solid 3px #6f9ead";
-var selectShareStyle = "solid 3px #fffc43";
+var selectedStyle = "0px 0px 5px 5px #ad03fc";
 var shareWIth = '';
 var continuous = false;
 var active = false;
@@ -145,7 +144,7 @@ async function shareLoop () {
 
                 //just for kicks, and to make it obvious which one is selected
                 if (currentEl[i]) {
-                    currentEl[i].style.border = selectedStyle
+                    currentEl[i].style.boxShadow = selectedStyle;
                 } else {
                     endCycle = true;
                     isLooping = false;
@@ -188,9 +187,9 @@ async function shareLoop () {
             await sleep(speed);
             
             if (endCycle === false) {
-                currentEl[i - 1].style.border = "none";
+                currentEl[i - 1].style.boxShadow = "none";
             } else if (endCycle === true && active === true) {
-                currentEl[i - 1].style.border = "none";
+                currentEl[i - 1].style.boxShadow = "none";
                 active = false;
                 running = false;
                 btnDisplay(shareEl, active)
