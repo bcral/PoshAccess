@@ -57,7 +57,7 @@ function includeHeader() {
     
     //nav element for page header
     var headerEl = document.createElement("nav");
-    headerEl.setAttribute("class", "navbar primary-color");
+    headerEl.className = "navbar primary-color";
     headerEl.id = "headerElement";
     
     //parent element that this element will be inserted into
@@ -338,6 +338,23 @@ function includePopout() {
     //parent element that this element will be inserted into
     document.getElementById("wrapDiv").appendChild(popoutEl);
 
+    //nav element for page header
+    var toolbarHeaderEl = document.createElement("nav");
+    toolbarHeaderEl.className = "navbar primary-color";
+    toolbarHeaderEl.id = "toolbarHeaderEl";
+
+    //parent element that this element will be inserted into
+    document.getElementById("popoutEl").appendChild(toolbarHeaderEl);
+
+    //h2 element for containing "poshaccess" text
+    var toolbarHeadTagEl = document.createElement("h2");
+    toolbarHeadTagEl.setAttribute("class", "primary-color");
+    toolbarHeadTagEl.id = "headTagElement";
+    toolbarHeadTagEl.innerHTML = "Pro Toolbar";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("toolbarHeaderEl").appendChild(toolbarHeadTagEl);
+
     //div element for button wrapper
     var buttonWrapEl = document.createElement("div");
     buttonWrapEl.id = "buttonWrapEl";
@@ -387,7 +404,7 @@ function includePopout() {
     //element for input of the "CAPTCHA alert" checkbox
     var captchaTextEl = document.createElement("label");
     captchaTextEl.id = "captchaTextEl";
-    captchaTextEl.innerHTML = "CAPTCHA alert";
+    captchaTextEl.innerHTML = "CAPTCHA Alert";
     captchaTextEl.setAttribute("for", "captcha");
 
     //parent element that this element will be inserted into
@@ -421,63 +438,63 @@ function includePopout() {
     //parent element that this element will be inserted into
     document.getElementById("rsWrapEl").appendChild(rsTextEl);
 
-        //div element for Rapid Share wrapper
-        var exceptWrapEl = document.createElement("div");
-        exceptWrapEl.id = "exceptWrapEl";
-        exceptWrapEl.className = "center list-el";
-        
-        //parent element that this element will be inserted into
-        document.getElementById("popoutEl").appendChild(exceptWrapEl);
+    //div element for Rapid Share wrapper
+    var exceptWrapEl = document.createElement("div");
+    exceptWrapEl.id = "exceptWrapEl";
+    exceptWrapEl.className = "center list-el";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("popoutEl").appendChild(exceptWrapEl);
 
-        //h5 element containing the header text for "Share Exceptions"
-        var exceptHeaderEl = document.createElement("h5");
-        exceptHeaderEl.className = "list-el";
-        exceptHeaderEl.innerHTML = "Share Exceptions:";
-        
-        //parent element that this element will be inserted into
-        document.getElementById("exceptWrapEl").appendChild(exceptHeaderEl);
+    //h5 element containing the header text for "Share Exceptions"
+    var exceptHeaderEl = document.createElement("h5");
+    exceptHeaderEl.className = "list-el";
+    exceptHeaderEl.innerHTML = "Share Exceptions:";
+    
+    //parent element that this element will be inserted into
+    document.getElementById("exceptWrapEl").appendChild(exceptHeaderEl);
 
-        //element for text label of the "Rapid Share" checkbox
-        var nfsTextEl = document.createElement("label");
-        nfsTextEl.id = "nfsTextEl";
-        nfsTextEl.className = "block";
-        nfsTextEl.innerHTML = "Not For Sale";
-        nfsTextEl.setAttribute("for", "notForSale");
-    
-        //parent element that this element will be inserted into
-        document.getElementById("exceptWrapEl").appendChild(nfsTextEl);
-    
-        //element for input of the "Rapid Share" checkbox
-        var nfsInputEl = document.createElement("input");
-        nfsInputEl.id = "nfsInputEl";
-        nfsInputEl.setAttribute("name", "notForSale");
-        nfsInputEl.setAttribute("type", "checkbox");
-        nfsInputEl.className = "checkbox";
-        nfsInputEl.checked = true;
-    
-        //parent element that this element will be inserted into
-        document.getElementById("nfsTextEl").appendChild(nfsInputEl);
-    
-        //element for text label of the "Rapid Share" checkbox
-        var soldTextEl = document.createElement("label");
-        soldTextEl.id = "soldTextEl";
-        soldTextEl.className = "block";
-        soldTextEl.innerHTML = "Sold";
-        soldTextEl.setAttribute("for", "sold");
-    
-        //parent element that this element will be inserted into
-        document.getElementById("exceptWrapEl").appendChild(soldTextEl);
+    //element for text label of the "Rapid Share" checkbox
+    var nfsTextEl = document.createElement("label");
+    nfsTextEl.id = "nfsTextEl";
+    nfsTextEl.className = "block";
+    nfsTextEl.innerHTML = "Not For Sale";
+    nfsTextEl.setAttribute("for", "notForSale");
 
-        //element for input of the "Rapid Share" checkbox
-        var soldInputEl = document.createElement("input");
-        soldInputEl.id = "soldInputEl";
-        soldInputEl.setAttribute("name", "sold");
-        soldInputEl.setAttribute("type", "checkbox");
-        soldInputEl.className = "checkbox";
-        soldInputEl.checked = true;
-    
-        //parent element that this element will be inserted into
-        document.getElementById("soldTextEl").appendChild(soldInputEl);
+    //parent element that this element will be inserted into
+    document.getElementById("exceptWrapEl").appendChild(nfsTextEl);
+
+    //element for input of the "Rapid Share" checkbox
+    var nfsInputEl = document.createElement("input");
+    nfsInputEl.id = "nfsInputEl";
+    nfsInputEl.setAttribute("name", "notForSale");
+    nfsInputEl.setAttribute("type", "checkbox");
+    nfsInputEl.className = "checkbox";
+    nfsInputEl.checked = true;
+
+    //parent element that this element will be inserted into
+    document.getElementById("nfsTextEl").appendChild(nfsInputEl);
+
+    //element for text label of the "Rapid Share" checkbox
+    var soldTextEl = document.createElement("label");
+    soldTextEl.id = "soldTextEl";
+    soldTextEl.className = "block";
+    soldTextEl.innerHTML = "Sold";
+    soldTextEl.setAttribute("for", "sold");
+
+    //parent element that this element will be inserted into
+    document.getElementById("exceptWrapEl").appendChild(soldTextEl);
+
+    //element for input of the "Rapid Share" checkbox
+    var soldInputEl = document.createElement("input");
+    soldInputEl.id = "soldInputEl";
+    soldInputEl.setAttribute("name", "sold");
+    soldInputEl.setAttribute("type", "checkbox");
+    soldInputEl.className = "checkbox";
+    soldInputEl.checked = true;
+
+    //parent element that this element will be inserted into
+    document.getElementById("soldTextEl").appendChild(soldInputEl);
 }
 
 // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
@@ -562,9 +579,9 @@ onload = hideApp();
     
     //message from background page that icon was clicked
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (displayed === false) {
+        if (!displayed) {
             showApp();
-        } else if (displayed === true) {
+        } else if (displayed) {
             hideApp();
         } else {
             console.log('neither condition is true');
@@ -647,5 +664,3 @@ const selectFunc = (item) => {
     toggleLinks(selectMode, isLooping);
     btnDisplay(item, selectMode);
 }
-
-

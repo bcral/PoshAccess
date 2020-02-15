@@ -81,11 +81,11 @@ width: 100%;
 
 .navButton {
   padding: 0.1em;
-  margin: 0.1em;
-  font-size: 22px;
+  margin: 0.2em;
+  font-size: 25px;
   color: #f0f0f0;
   cursor: pointer;
-  line-height: 70%;
+  line-height: 50%;
   border: solid 1px #86bccc;
   display: block;
 }
@@ -110,6 +110,11 @@ width: 100%;
   display: block;
   margin: 0.4em auto;
   padding: 0.4em;
+}
+
+.followBtn:hover {
+  background: #ccc;
+  color: #000;
 }
 
 .checkbox {
@@ -140,6 +145,11 @@ width: 100%;
   width: 100%;
   padding: 0.5em;
   border: solid 1px #cccccc;
+}
+
+#shareEl:hover {
+  background-color: #ccc;
+  color: #000;
 }
 
 #optionsEl {
@@ -194,11 +204,6 @@ width: 100%;
 #speedValueEl {
   width: 25px;
   text-decoration: none;
-}
-
-#shareEl:hover {
-  background-color: #cccccc;
-  color: #000000;
 }
 
 #buttonCont {

@@ -17,7 +17,9 @@ alarm.src = chrome.runtime.getURL("img/CAPTCHA_chime.mp3");
 var selectItem = document.getElementsByClassName('auth-required');
 let followLooping = false;
 var condition = false;
+//counter for current item - resets if follow/unfollow is toggled
 let j = 0;
+var clickedButton;
 //variables for checking the status of exceptions in the UI
 var exception;
 
@@ -30,13 +32,13 @@ let shareValues = {shareWith: "", continuous: false, y: false};
 
 //sets values based on what the user selects in the UI
 function writeValues() {
-    if (document.getElementById("followers").checked === true) {
+    if (document.getElementById("followers").checked) {
         shareWith = 'followers';
     } else {
         shareWith = 'party';
     } 
 
-    if (document.getElementById("contInputEl").checked === true) {
+    if (document.getElementById("contInputEl").checked) {
         continuous = true;
     } else {
         continuous = false;
@@ -95,7 +97,7 @@ async function shareLoop () {
 
     //share loop that continues firing until "active" returns false
     async function doSomething() {
-        while (active === true) {
+        while (active) {
 
             //stop share loop if captcha appears
             if (document.getElementById("captcha-form")) {
@@ -173,9 +175,9 @@ async function shareLoop () {
             //selects share link based on which itteration of the loop(i) is
             //currently selected.  Forces popup window with option to share to
             //followers or party
-            if (i < totalListings && i < totalEls && endCycle === false) {
+            if (i < totalListings && i < totalEls && !endCycle) {
                 statusChecker();
-            } else if ((i <= totalListings || i <= totalEls) && continuous === true && endCycle === false) {
+            } else if ((i <= totalListings || i <= totalEls) && continuous && !endCycle) {
                 i = 0;
                 statusChecker();      
             } else {
@@ -186,9 +188,9 @@ async function shareLoop () {
             i++;
             await sleep(speed);
             
-            if (endCycle === false) {
+            if (!endCycle) {
                 currentEl[i - 1].style.boxShadow = "none";
-            } else if (endCycle === true && active === true) {
+            } else if (endCycle && active) {
                 currentEl[i - 1].style.boxShadow = "none";
                 active = false;
                 running = false;
@@ -217,7 +219,7 @@ async function shareLoop () {
 //kkkkkkkkkkkkkkkkkkkkkkkkkk FOLLOW & UNFOLLOW kkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-var clickedButton;
+
 const followFunc = async (item) => {
 
     if (clickedButton === null || clickedButton !== item) {
@@ -233,7 +235,7 @@ const followFunc = async (item) => {
     //condition for determining if item is hidden or not - if it is, skip it
     var excludeCondition;
     //While loop for following/unfollowing
-    while (loopStat === true && j <= selectItem.length) {
+    while (loopStat && j <= selectItem.length) {
 
         followLooping = true;
         if (selectItem[j]) {
