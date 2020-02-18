@@ -18,7 +18,8 @@
       "js":      ["content.js", "share-content.js"]
     }],
     "permissions": [
-      "tabs"
+      "tabs",
+      "storage"
     ], 
     "web_accessible_resources": [
       "styles.css",

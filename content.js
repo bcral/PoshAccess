@@ -1,4 +1,8 @@
+//constant for values to write to buttons after they're deactivated
 const originalText = {shareEl: "SHARE", followButtonEl: "FOLLOW", unfollowButtonEl: "UNFOLLOW", sAndSButtonEl: "SELECT ITEMS"};
+//declare variable for storing values in global scope
+var inputValues = {};
+var data;
 
 // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 // kkkkkkkkkkkkkkkkkkkk Parent element for all HTML kkkkkkkkkkkkkkkkkkkk
@@ -163,13 +167,10 @@ function includeForm() {
     speedInputEl.id = "speed";
     speedInputEl.setAttribute("name", "speed");
     speedInputEl.setAttribute("type", "range");
-    speedInputEl.setAttribute("min", 2000);
+    speedInputEl.setAttribute("min", 1000);
     speedInputEl.setAttribute("max", 10000);
-    speedInputEl.setAttribute("step", 1000);
-    speedInputEl.setAttribute("value", 6000);    
-    speedInputEl.addEventListener('change',function() {
-            speedValueEl.innerHTML=parseInt((speedInputEl.value) / 1000) + " seconds";
-        });
+    speedInputEl.setAttribute("step", 1000);   
+    speedInputEl.addEventListener('change', writeSpeed);
 
     //parent element that this element will be inserted into
     document.getElementById("formSpeedContainerEl").appendChild(speedInputEl);
@@ -178,12 +179,11 @@ function includeForm() {
     var speedValueBreakEl = document.createElement("br");
     document.getElementById("formSpeedContainerEl").appendChild(speedValueBreakEl);
 
-    //element for input of the "share with" radio button for followers
+    //element for label of the speed range input/slider
     var speedValueEl = document.createElement("label");
     speedValueEl.id = "speedValueEl";
     speedValueEl.setAttribute("for", "speed")
     speedValueEl.setAttribute("maxlength", 10);
-    speedValueEl.innerHTML=(speedInputEl.value / 1000) + " seconds";
     speedValueEl.className = "center";
 
     //parent element that this element will be inserted into
@@ -441,7 +441,7 @@ function includePopout() {
     //div element for Rapid Share wrapper
     var exceptWrapEl = document.createElement("div");
     exceptWrapEl.id = "exceptWrapEl";
-    exceptWrapEl.className = "center list-el";
+    exceptWrapEl.className = "center list-el borderBottom";
     
     //parent element that this element will be inserted into
     document.getElementById("popoutEl").appendChild(exceptWrapEl);
@@ -495,8 +495,8 @@ function includePopout() {
 
     //parent element that this element will be inserted into
     document.getElementById("soldTextEl").appendChild(soldInputEl);
-}
 
+}
 // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 // End of code for creating and inserting "popout" elements  
 
@@ -547,51 +547,56 @@ async function buildApp() {
     }
 
 onload = buildApp();
-onload = hideApp();
+
+var appWrapper = document.getElementById("wrapDiv");
     
-    var displayed = false;
-    var toggle = false;
-    var running = false;
-    var loopStat = false;
-    
-    function hideApp() {
-        var appWrapper = document.getElementById("wrapDiv");
-        appWrapper.style.display = "none";
-        displayed = !displayed;
+var displayed = true;
+var toggle = false;
+var running = false;
+var loopStat = false;
+
+function hideApp() {
+    appWrapper.style.display = "none";
+    displayed = !displayed;
+}
+
+function showApp() {
+    appWrapper.style.display = "block";
+    displayed = !displayed;
+}
+
+function togglePopout() {
+    toggle = !toggle;
+    if ( toggle ) {
+        popoutEl.style.display = "block";
+        popout.innerHTML = "<";
+    } else {
+        popoutEl.style.display = "none";
+        popout.innerHTML = ">";
     }
-    
-    function showApp() {
-        var appWrapper = document.getElementById("wrapDiv");
-        appWrapper.style.display = "block";
-        displayed = !displayed;
+}
+
+//message from background page that icon was clicked
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (!displayed) {
+        showApp();
+    } else if (displayed) {
+        hideApp();
     }
 
-    function togglePopout() {
-        toggle = !toggle;
-        if ( toggle ) {
-            popoutEl.style.display = "block";
-            popout.innerHTML = "<";
-        } else {
-            popoutEl.style.display = "none";
-            popout.innerHTML = ">";
-        }
+    if (request.icon == "click") {
+        sendResponse = 'recieved'; 
     }
-    
-    //message from background page that icon was clicked
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (!displayed) {
-            showApp();
-        } else if (displayed) {
-            hideApp();
-        } else {
-            console.log('neither condition is true');
-        }
-        if (request.icon == "click") {
-        sendResponse = 'recieved'; }
-    });
-    
-    // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-    // kkkkkkkkkkkkkkkkkkkkkkkkk Share button code kkkkkkkkkkkkkkkkkkkkkkkkk
+});
+
+//function for setting the value in the label for the speed slider
+function writeSpeed() {
+    document.getElementById('speedValueEl').innerHTML = parseInt(
+        (document.getElementById('speed').value) / 1000) + " seconds";
+}
+
+// kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// kkkkkkkkkkkkkkkkkkkkkkkkk Share button code kkkkkkkkkkkkkkkkkkkkkkkkk
     
 function btnDisplay(c, d) {
     let key = c.id;
@@ -658,9 +663,49 @@ const followLoop = (item) => {
     }
 }
 
-//function for toggling and calling function for select & share
-const selectFunc = (item) => {
-    selectMode = !selectMode;
-    toggleLinks(selectMode, isLooping);
-    btnDisplay(item, selectMode);
+//function for saving settings as presets
+//send message to background page to store the events to be recalled on load
+window.onunload = function() {
+
+    setSpeed();
+
+    data = {
+        'spd': speed,
+        'shrFlw': document.getElementById('followers').checked,
+        'shrPrty': document.getElementById('party').checked,
+        'contF': document.getElementById('onceInputEl').checked,
+        'contT': document.getElementById('contInputEl').checked,
+        'captcha': document.getElementById('captchaInputEl').checked,
+        'rs': document.getElementById('rsInputEl').checked,
+        'nfs': document.getElementById('nfsInputEl').checked,
+        'sld': document.getElementById('soldInputEl').checked
+    }
+
+    chrome.storage.sync.set({'key': data}, function() {
+        console.log('success!');
+    });
+
+}
+
+window.onload = function() {
+
+    chrome.storage.sync.get('key', function(data) {
+        if (data) {
+            document.getElementById('speed').value = data.key.spd;
+            writeSpeed();
+
+            document.getElementById('followers').checked = data.key.shrFlw;
+            document.getElementById('party').checked = data.key.shrPrty;
+            document.getElementById('onceInputEl').checked = data.key.contF;
+            document.getElementById('contInputEl').checked = data.key.contT;
+            document.getElementById('captchaInputEl').checked = data.key.captcha; 
+            document.getElementById('rsInputEl').checked = data.key.rs; 
+            document.getElementById('nfsInputEl').checked = data.key.nfs; 
+            document.getElementById('soldInputEl').checked = data.key.sld;  
+
+        } else {
+            console.log('nothing is saved yet');
+        }
+    });
+
 }

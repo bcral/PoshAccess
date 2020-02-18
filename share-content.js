@@ -70,12 +70,6 @@ function listingsConfirm() {
 
 }
 
-//function for the captcha alarm
-async function captchaAlarm() {
-    alarm.play();
-    await sleep(3000);
-}
-
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkk SHARE LOOP CODE kkkkkkkkkkkkkkkkkkkkkkkkkkkkk
@@ -100,15 +94,19 @@ async function shareLoop () {
         while (active) {
 
             //stop share loop if captcha appears
-            if (document.getElementById("captcha-form")) {
+            if (document.getElementById("captcha-popup")) {
                 endCycle = true;
 
                 //check UI input to see if user selected CAPTCHA alarm
                 if (captchaInputEl.checked) {
+                    console.log("captchaInputEl.checked");
                     //play audio file
-                    while (document.getElementById("captcha-form")) captchaAlarm();
+                    while (document.getElementById("captcha-popup")) {
+                        alarm.play();
+                        await sleep(3000);
+                        console.log('alarm looping');
+                    }
                 }
-                break;
             }
 
             var totalEls = currentEl.length;
@@ -165,7 +163,6 @@ async function shareLoop () {
                 (soldInputEl.checked && thisItem.classList.contains('sold-tag'))) {
                     //slows delay speed to skip through faster
                     speed = 300;
-                    console.log('skipped');
                 } else {
                     document.getElementsByClassName('share')[i].click();
                     await sleep(800).then(sharePopupFunction());
