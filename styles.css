@@ -30,12 +30,12 @@ a {
 }
 
 .primary-color {
-  background: #6f9ead;
+  background: 	#5dafb2;
   color: #f0f0f0;
 }
 
 .warning-color {
-  background-color: #c99f9c;
+  background-color: #b25e5d;
   color: #ffffff;
 }
 
@@ -86,13 +86,13 @@ width: 100%;
   color: #f0f0f0;
   cursor: pointer;
   line-height: 50%;
-  border: solid 1px #86bccc;
+  border: solid 1px #f0f0f0;
   display: block;
 }
 
 .navButton:hover {
   color: #cccccc;
-  background-color: #6f9ead;
+  background-color: #5dafb2;
   font-style: bold;
   cursor: pointer;
   text-decoration: none;
