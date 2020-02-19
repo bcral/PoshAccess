@@ -3,6 +3,7 @@ const originalText = {shareEl: "SHARE", followButtonEl: "FOLLOW", unfollowButton
 //declare variable for storing values in global scope
 var inputValues = {};
 var data;
+var reverseShare = false;
 
 // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 // kkkkkkkkkkkkkkkkkkkk Parent element for all HTML kkkkkkkkkkkkkkkkkkkk
@@ -694,7 +695,8 @@ window.onunload = function() {
         'captcha': document.getElementById('captchaInputEl').checked,
         'rs': document.getElementById('rsInputEl').checked,
         'nfs': document.getElementById('nfsInputEl').checked,
-        'sld': document.getElementById('soldInputEl').checked
+        'sld': document.getElementById('soldInputEl').checked,
+        'rev': document.getElementById('reverseInputEl').checked
     }
 
     chrome.storage.sync.set({'key': data}, function() {
@@ -718,6 +720,7 @@ window.onload = function() {
             document.getElementById('rsInputEl').checked = data.key.rs; 
             document.getElementById('nfsInputEl').checked = data.key.nfs; 
             document.getElementById('soldInputEl').checked = data.key.sld;  
+            document.getElementById('reverseInputEl').checked = data.key.rev; 
 
         } else {
             console.log('nothing is saved yet');
@@ -725,4 +728,3 @@ window.onload = function() {
     });
 
 }
-

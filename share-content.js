@@ -5,11 +5,6 @@ var shareWIth = '';
 var continuous = false;
 var active = false;
 var isLooping = false;
-//total number of listings in closet - for stopping share loop at the end
-//of the closet, if selected
-var totalListings = document.querySelector('.count').textContent;
-totalListings = totalListings.replace(/\,/g,'');
-totalListings = parseInt(totalListings,10);
 //CAPTCHA alarm settings
 var alarm = new Audio();
 alarm.src = chrome.runtime.getURL("img/CAPTCHA_chime.mp3");
@@ -60,16 +55,6 @@ async function displayWarn() {
     }, 7000);
 }    
 
-//function to ensure that the number stored in "totalListings" is indeed
-//the number of items in the closet
-function listingsConfirm() {
-    if (document.querySelector('.count').classList.contains('has-likes')
-    || document.querySelector('.count').parentNode.classList.contains('refresh-text')) {
-        totalListings = 20000;
-    }
-
-}
-
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkk SHARE LOOP CODE kkkkkkkkkkkkkkkkkkkkkkkkkkkkk
@@ -89,6 +74,10 @@ async function shareLoop () {
 
     var endCycle = false;
 
+    var totalEls = currentEl.length;
+
+    reverseShare = reverseInputEl.checked;
+
     //share loop that continues firing until "active" returns false
     async function doSomething() {
         while (active) {
@@ -97,42 +86,38 @@ async function shareLoop () {
 
             //stop share loop if captcha appears
             if (captchaEl) {
-                endCycle = true;
+                if (captchaEl.style.display == 'block') {
+                    endCycle = true;
 
-                //check UI input to see if user selected CAPTCHA alarm
-                if (captchaInputEl.checked) {
-                    //play audio file
-                    var isCaptcha = false;
-                    
-                    const testCaptcha = async () => {
-                    
-                        isCaptcha = true;
+                    //check UI input to see if user selected CAPTCHA alarm
+                    if (captchaInputEl.checked) {
+                        //play audio file
+                        var isCaptcha = false;
+                        
+                        const testCaptcha = async () => {
+                        
+                            isCaptcha = true;
 
-                        captchaLoop:
-                        while (isCaptcha) {
-                            alarm.play();
-                            await sleep(3000);
-                            console.log('alarm looping');
-                            if (!captchaEl) {
-                                isCaptcha = false;
-                                break captchaLoop;
+                            while (isCaptcha) {
+                                alarm.play();
+                                await sleep(3000);
+                                if (captchaEl.style.display == 'none') {
+                                    isCaptcha = false;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    const captchaContinue = () => {
-                        endCycle = false;
-                        console.log('loop cleared!');
-                        
-                    }
+                        const captchaContinue = () => {
+                            endCycle = false;
+                        }
 
-                    await testCaptcha().then(captchaContinue);
+                        await testCaptcha().then(captchaContinue);
+                    }
                 }
             }
-            
-            var totalEls = currentEl.length;
+    
+            totalEls = currentEl.length;
 
-            listingsConfirm();
-        
             //funtion that is called after the "share" button is clicked, which
             //reads the value of the user's input for where to share the items,
             //and chooses the correct link in the popup window.  Also checks to
@@ -192,9 +177,9 @@ async function shareLoop () {
             //selects share link based on which itteration of the loop(i) is
             //currently selected.  Forces popup window with option to share to
             //followers or party
-            if (i < totalListings && i < totalEls && !endCycle) {
+            if (i < totalEls && !endCycle) {
                 statusChecker();
-            } else if ((i <= totalListings || i <= totalEls) && continuous && !endCycle) {
+            } else if (i <= totalEls && continuous && !endCycle) {
                 i = 0;
                 statusChecker();      
             } else {
@@ -223,13 +208,6 @@ async function shareLoop () {
   //initiates share loop
   doSomething();
 }
-
-//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-//kkkkkkkkkkkkkkkkkkkkkkkkkkk SELECT AND SHARE kkkkkkkkkkkkkkkkkkkkkkkkkkkk
-//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-//kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-
 
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
 //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
