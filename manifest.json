@@ -14,7 +14,15 @@
       "persistent": false
     },
     "content_scripts": [{
-      "matches": ["*://poshmark.com/closet*", "*://poshmark.com/party*", "*://poshmark.com/category*", "*://poshmark.com/search*people", "*://poshmark.com/search*listings","*://poshmark.com/brand*", "*://poshmark.com/*followers", "*://poshmark.com/*following"],
+      "matches": ["*://poshmark.com/closet*",
+                  "*://poshmark.com/party*",
+                  "*://poshmark.com/category*",
+                  "*://poshmark.com/search*people",
+                  "*://poshmark.com/search*listings",
+                  "*://poshmark.com/brand*",
+                  "*://poshmark.com/*followers",
+                  "*://poshmark.com/*following"],
+                  
       "js":      ["content.js", "share-content.js"]
     }],
     "permissions": [

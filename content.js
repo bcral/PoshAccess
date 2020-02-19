@@ -9,13 +9,29 @@ var data;
 
 function includeWrap() {
 
-    //main wrapper element that is included to the site's DOM
-    var thing = document.createElement("div");
-    thing.id = "wrapDiv";
+    var bodyWrapEl = document.createElement("div");
+    bodyWrapEl.id = "bodyWrapEl";
     
     //adding the main wrapper element to the DOM - this contains all following
     //HTML elements that are created
-    document.body.appendChild(thing);
+    document.body.appendChild(bodyWrapEl);
+
+    //main wrapper element that is included to the site's DOM
+    var warningWrapEl = document.createElement("div");
+    warningWrapEl.id = "warningWrapEl";
+    
+    //adding the main wrapper element to the DOM - this contains all following
+    //HTML elements that are created
+    document.getElementById('bodyWrapEl').appendChild(warningWrapEl);
+
+    //main wrapper element that is included to the site's DOM
+    var wrapDiv = document.createElement("div");
+    wrapDiv.id = "wrapDiv";
+    
+    //adding the main wrapper element to the DOM - this contains all following
+    //HTML elements that are created
+    document.getElementById('bodyWrapEl').appendChild(wrapDiv);
+    
 }
     
 // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
@@ -44,7 +60,7 @@ function includeWarning() {
     warningEl.style.display = "none";
 
     //parent element that this element will be inserted into
-    document.getElementById("wrapDiv").appendChild(warningEl);
+    document.getElementById("warningWrapEl").appendChild(warningEl);
 }
     
 // Start code for creating and inserting header elements
@@ -709,3 +725,4 @@ window.onload = function() {
     });
 
 }
+

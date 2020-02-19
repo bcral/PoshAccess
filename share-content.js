@@ -93,22 +93,42 @@ async function shareLoop () {
     async function doSomething() {
         while (active) {
 
+            var captchaEl = document.getElementById("captcha-popup");
+
             //stop share loop if captcha appears
-            if (document.getElementById("captcha-popup")) {
+            if (captchaEl) {
                 endCycle = true;
 
                 //check UI input to see if user selected CAPTCHA alarm
                 if (captchaInputEl.checked) {
-                    console.log("captchaInputEl.checked");
                     //play audio file
-                    while (document.getElementById("captcha-popup")) {
-                        alarm.play();
-                        await sleep(3000);
-                        console.log('alarm looping');
+                    var isCaptcha = false;
+                    
+                    const testCaptcha = async () => {
+                    
+                        isCaptcha = true;
+
+                        captchaLoop:
+                        while (isCaptcha) {
+                            alarm.play();
+                            await sleep(3000);
+                            console.log('alarm looping');
+                            if (!captchaEl) {
+                                isCaptcha = false;
+                                break captchaLoop;
+                            }
+                        }
                     }
+                    const captchaContinue = () => {
+                        endCycle = false;
+                        console.log('loop cleared!');
+                        
+                    }
+
+                    await testCaptcha().then(captchaContinue);
                 }
             }
-
+            
             var totalEls = currentEl.length;
 
             listingsConfirm();

@@ -126,7 +126,7 @@ width: 100%;
   display: block;
 }
 
-#wrapDiv {
+#bodyWrapEl {
   z-index: 2000;
   position: fixed;
   bottom: 10px;
@@ -136,8 +136,10 @@ width: 100%;
   margin: auto;
   padding: 0;
   box-shadow: -5px -5px 3px rgba(0, 0, 0, 0.3);
-  display: flex;
-  overflow: hidden;
+}
+
+#wrapDiv{
+  background-color: #f0f0f0;
 }
 
 #shareEl {
