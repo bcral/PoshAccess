@@ -660,11 +660,15 @@ function setSpeed() {
 
 //function for calling the rapid share functionality from share-content
 const rapidShare = () => {
-    if (!isLooping) {
+    var shareElements = document.getElementsByClassName('share');
+    if (document.getElementById('rsInputEl').checked && !isLooping) {
         //make function fire on share
-        var shareElements = document.getElementsByClassName('share');
         for (var i = 0; i < shareElements.length; i++) {
-            shareElements[i].addEventListener("click", rapidShareFunc);
+            shareElements[i].addEventListener("click", rapidShareFunc, true);
+        }
+    } else {
+        for (var i = 0; i < shareElements.length; i++) {
+            shareElements[i].removeEventListener("click", rapidShareFunc, true);
         }
     }
 }
@@ -696,7 +700,6 @@ window.onunload = function() {
         'rs': document.getElementById('rsInputEl').checked,
         'nfs': document.getElementById('nfsInputEl').checked,
         'sld': document.getElementById('soldInputEl').checked,
-        'rev': document.getElementById('reverseInputEl').checked
     }
 
     chrome.storage.sync.set({'key': data}, function() {
@@ -716,11 +719,12 @@ window.onload = function() {
             document.getElementById('party').checked = data.key.shrPrty;
             document.getElementById('onceInputEl').checked = data.key.contF;
             document.getElementById('contInputEl').checked = data.key.contT;
-            document.getElementById('captchaInputEl').checked = data.key.captcha; 
+            document.getElementById('captchaInputEl').checked = data.key.captcha;
+            //write the stored value, execute function
             document.getElementById('rsInputEl').checked = data.key.rs; 
+                rapidShare();
             document.getElementById('nfsInputEl').checked = data.key.nfs; 
             document.getElementById('soldInputEl').checked = data.key.sld;  
-            document.getElementById('reverseInputEl').checked = data.key.rev; 
 
         } else {
             console.log('nothing is saved yet');

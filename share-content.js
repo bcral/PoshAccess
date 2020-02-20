@@ -76,8 +76,6 @@ async function shareLoop () {
 
     var totalEls = currentEl.length;
 
-    reverseShare = reverseInputEl.checked;
-
     //share loop that continues firing until "active" returns false
     async function doSomething() {
         while (active) {
